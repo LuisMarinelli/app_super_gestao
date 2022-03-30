@@ -25,7 +25,9 @@ Route::get('/login', function(){ return 'Pág Login';})->name('site.login');
 // prefixo de rotas privadas /app
 Route::prefix('/app')->group(function(){
     Route::get('/clientes', function(){ return 'Pág Clientes';})->name('site.clientes');
-    Route::get('/fornecedores', function(){ return 'Pág Fornecedores';})->name('site.fornecedores');
+    
+    //Route::get('/fornecedores', function(){ return 'Pág Fornecedores';})->name('site.fornecedores');
+    Route::get('/fornecedores','FornecedoresController@index');
     Route::get('/produtos', function(){ return 'Pág Produtos';})->name('site.produtos');
 });
 
