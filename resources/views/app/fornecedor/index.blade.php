@@ -23,38 +23,81 @@ Status: {{ $fornecedores[0]['status'] }}
 @endunless --}}
 
 @isset($fornecedores)
-    Fornecedor:: {{ $fornecedores[2]['nome'] }}
-    <br>
-    Status: {{ $fornecedores[2]['status'] }}
-    <br>
-    <!-- Se a variavel não estiver definida (isset) ou null (empty), será usado o default-->
-    CNPJ: {{ $fornecedores[2]['cnpj'] ?? '-- Vázio' }}
+    {{-- Estrutura FOR --}}
+    {{-- @for ($i = 0; isset($fornecedores[$i]); $i++) --}}
+    {{-- @php $i = 0; @endphp --}}
 
-    {{-- @isset($fornecedores[0]['cnpj'])
+    {{-- Estrutura WHILE --}}
+    {{-- @while (isset($fornecedores[$i])) --}}
 
-        CNPJ: {{ $fornecedores[0]['cnpj'] }}
-        @empty($fornecedores[0]['cnpj'])
-            -- Vázio
-        @endempty
-    @endisset --}}
-    <br>
+    {{-- Estrutura FOREACH --}}
+    {{-- @foreach ($fornecedores as $index => $fornecedor) --}}
 
-    Telefone: ({{ $fornecedores[1]['ddd'] ?? '-- Vázio' }}) {{ $fornecedores[2]['telefone'] ?? '-- Vázio' }}
+    {{-- Estrutura FORELSE BLADE --}}
+    @forelse ($fornecedores as $index => $fornecedor)
+        {{-- Objeto Loop só em Foreach/Forelse --}}
+        Indice Atual: {{ $loop->iteration }}
+        <br>
+        {{-- Fornecedor:: {{ $fornecedores[$i]['nome'] }} --}}
+        Fornecedor:: {{ $fornecedor['nome'] }}
+        <br>
+        {{-- Status: {{ $fornecedores[$i]['status'] }} --}}
+        Status: {{ $fornecedor['status'] }}
+        <br>
+        <!-- Se a variavel não estiver definida (isset) ou null (empty), será usado o default-->
+        {{-- CNPJ: {{ $fornecedores[$i]['cnpj'] ?? '-- Vázio' }} --}}
+        CNPJ: {{ $fornecedor['cnpj'] ?? '-- Vázio' }}
+        <br>
+        {{-- Telefone: ({{ $fornecedores[$i]['ddd'] ?? '-- Vázio' }}) {{ $fornecedores[$i]['telefone'] ?? '-- Vázio' }} --}}
+        Telefone: ({{ $fornecedor['ddd'] ?? '-- Vázio' }}) {{ $fornecedor['telefone'] ?? '-- Vázio' }}
+        <br>
+        @if ($loop->first)
+            Primeira iteração.
+        @endif
+        @if ($loop->last)
+            Ultima iteração.
+            <br>
+            Total de Registros {{ $loop->count}}
+        @endif
+        {{-- @isset($fornecedores[0]['cnpj'])
 
-    {{-- @switch($fornecedores[2]['ddd'])
-        @case('11')
-            São Paulo - SP
-        @break
+            CNPJ: {{ $fornecedores[0]['cnpj'] }}
+            @empty($fornecedores[0]['cnpj'])
+                -- Vázio
+            @endempty'
+        @endisset --}}
 
-        @case('32')
-            Juiz de Fora - MG
-        @break
+        {{-- @switch($fornecedores[2]['ddd'])
+            @case('11')
+                São Paulo - SP
+            @break
 
-        @case('85')
-            Fortaleza - CE
-        @break
+            @case('32')
+                Juiz de Fora - MG
+            @break
 
-        @default
-            Estado não Identificado
-    @endswitch --}}
+            @case('85')
+                Fortaleza - CE
+            @break
+
+            @default
+                Estado não Identificado
+        @endswitch --}}
+        <hr>
+
+        {{-- Desvio condicional do FORELSE --}}
+    @empty
+        Não existem fornecedores cadastrados.
+        {{-- fim Estrutura FORELSE --}}
+    @endforelse
+
+    {{-- fim Estrutura FOREACH --}}
+    {{-- @endforeach --}}
+
+    {{-- fim Estrutura while --}}
+    {{-- @php $i++; @endphp --}}
+    {{-- @endwhile --}}
+
+    {{-- fim Estrutura FOR --}}
+    {{-- @endfor --}}
 @endisset

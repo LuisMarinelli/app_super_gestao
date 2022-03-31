@@ -35,14 +35,16 @@ class FornecedoresController extends Controller
         //atalho do IF nativo do php (Condicionadores Ternarios)
         echo isset($fornecedores[1]['cnpj']) ? 'CNPJ Informado' : 'CNPJ não informado';
 
-        //ou
-        
+        ou
 
         $msg = isset($fornecedores[1]['cnpj']) ? 'CNPJ Informado' : 'CNPJ não informado';
 
         echo $msg;
         
+        //teste para desvio do forelse na view
+        $fornecedores = [];
         */
+        
         return view('app.fornecedor.index', compact('fornecedores'));
     }
 }
