@@ -21,7 +21,8 @@ Route::get('/', 'PrincipalController@principal')->name('site.index');
 
 //Route::get('/contatos', 'ContatosController@contatos')->name('site.contatos');
 //post laravel ^7-8
-Route::match(['get','post'],'/contatos', 'ContatosController@contatos')->name('site.contatos');
+Route::match(['get','post'],'/contato', 'ContatoController@contato')->name('site.contato');
+Route::post('/contato', 'ContatoController@salvar')->name('site.contato');
 
 Route::get('/sobre', 'SobreController@sobre')->name('site.sobre');
 Route::get('/login', function(){ return 'Pág Login';})->name('site.login');

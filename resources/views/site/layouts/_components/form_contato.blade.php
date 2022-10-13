@@ -1,6 +1,6 @@
-{{ $slot }} {{-- Variavel para 'liberar' o conteudo citado entre as tegs components s existir.--}}
+{{ $slot }} {{-- Variavel para 'liberar' o conteudo citado entre as tegs components s existir. --}}
 {{ $classe }}
-<form action="{{ route('site.contatos') }}" method='post'>
+<form action="{{ route('site.contato') }}" method='post'>
     @csrf
     <input name='nome' type="text" placeholder="Nome" class="{{ $classe }}">
     <br>
@@ -8,14 +8,20 @@
     <br>
     <input name='email' type="text" placeholder="E-mail" class="{{ $classe }}">
     <br>
-    <select name='motivo' class="{{ $classe }}">
+    <select name='motivo_contato' class="{{ $classe }}">
         <option value="">Qual o motivo do contato?</option>
         <option value="1">Dúvida</option>
         <option value="2">Elogio</option>
         <option value="3">Reclamação</option>
     </select>
     <br>
-    <textarea name='msg' class="{{ $classe }}">Preencha aqui a sua mensagem</textarea>
+    <textarea name='mensagem' class="{{ $classe }}">Preencha aqui a sua mensagem</textarea>
     <br>
     <button type="submit" class="{{ $classe }}">ENVIAR</button>
 </form>
+
+<div style="position: absolute; top:0px; left:0px; width: 100%; background: red;">
+    <pre>
+{{ print_r($errors) }}
+</pre>
+</div>
