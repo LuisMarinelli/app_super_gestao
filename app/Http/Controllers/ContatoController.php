@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\SiteContato;
+use App\MotivoContato;
 
 class ContatoController extends Controller
 {
@@ -38,25 +39,45 @@ class ContatoController extends Controller
         $contato->fill($request->all());
         //print_r($contato->getAttributes());
         $contato->create($request->all());
-*/
-        return view('site.contato', ['titulo' => 'Contato (teste)']);
+        */
+
+        $motivo_contatos = MotivoContato::all();
+
+        return view('site.contato', ['titulo' => 'Contato (teste)', 'motivo_contatos' => $motivo_contatos]);
     }
 
     public function salvar(Request $request)
     {
-        $request->validate(
-            [
-                'nome' => 'required',
-                'telefone' => 'required',
-                'email' => 'required',
-                'motivo_contato' => 'required',
-                'mensagem' => 'required',
-            ]
-        );
-
         //realizar validação de dados recebidos no request
-        //SiteContato::create($request->all());
 
+        $regras =  [
+            /*
+                ** TESTE para caso o campo tenha que ser único, sintaxe:
+                ' [...] | unique: <nome_tabela> ',
+            */
+            'nome' => 'required | min:3 | max:40 ',
+            'telefone' => 'required',
+            'email' => 'email',
+            'motivo_contatos_id' => 'required',
+            'mensagem' => 'required | max: 220',
 
+        ];
+
+        $feedback = [
+            'nome.min' => 'O campo Nome precisa ser maior que 3 caractéres',
+            'nome.max' => 'O campo Nome precisa ser menor que 40 caractéres',
+            'telefone.required' => 'O campo Telefone é Obrigatório',
+            'email.email' => 'O campo Email precisa ser válido',
+            'motivo_contatos_id.required' => 'O campo Motivo deve ser escolhido',
+            //'mensagem.required' => 'O campo Mensagem deve ser preenchido',
+            'mensagem.max' => 'O campo Mensagem precisa ser menor que 220 caractéres',
+            //Mensagem default para algum outro campo, exemplo 'required'
+            'required' => 'O campo :Attribute é obrigatório'
+        ];
+
+        $request->validate($regras, $feedback);
+
+        SiteContato::create($request->all());
+        return redirect()->route('site.index');
     }
 }
