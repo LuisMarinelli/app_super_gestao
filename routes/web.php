@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\LogAcessoMiddleware;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,26 +18,35 @@ Route::get('/', function () {
 });
 */
 
-Route::get('/', 'PrincipalController@principal')->name('site.index');
+Route::get('/', 'PrincipalController@principal')->name('site.index')->middleware('log.acesso');
 
 //Route::get('/contatos', 'ContatosController@contatos')->name('site.contatos');
 //post laravel ^7-8
-Route::match(['get','post'],'/contato', 'ContatoController@contato')->name('site.contato');
+Route::match(['get', 'post'], '/contato', 'ContatoController@contato')->name('site.contato');
 Route::post('/contato', 'ContatoController@salvar')->name('site.contato');
 
 Route::get('/sobre', 'SobreController@sobre')->name('site.sobre');
-Route::get('/login', function(){ return 'Pág Login';})->name('site.login');
+
+Route::get('/login', 'LoginController@index')->name('site.login');
+Route::post('/login', 'LoginController@autenticar')->name('site.login');
 
 // prefixo de rotas privadas /app
-Route::prefix('/app')->group(function(){
-    Route::get('/clientes', function(){ return 'Pág Clientes';})->name('site.clientes');
-    
-    //Route::get('/fornecedores', function(){ return 'Pág Fornecedores';})->name('site.fornecedores');
-    Route::get('/fornecedores','FornecedoresController@index');
-    Route::get('/produtos', function(){ return 'Pág Produtos';})->name('site.produtos');
+Route::middleware('autenticacao:padrao,visitante')->prefix('/app')->group(function () {
+
+    Route::get('/clientes', function () {
+        return 'Pág Clientes';
+    })
+        ->name('site.clientes');
+
+    Route::get('/fornecedores', 'FornecedoresController@index');
+
+    Route::get('/produtos', function () {
+        return 'Pág Produtos';
+    })
+        ->name('site.produtos');
 });
 
-Route::get('/teste/{p1}/{p2}' , 'TesteController@teste')->name('teste');
+Route::get('/teste/{p1}/{p2}', 'TesteController@teste')->name('teste');
 
 //redirects 2 métodos
 //via return controller
@@ -53,8 +63,8 @@ Route::get('/rota2' , function(){
 //Route::redirect('/rota2', '/rota1');
 */
 
-Route::fallback(function(){
-    echo 'Página não Existe. <a href="'.route("site.index").'">Clique aqui</a> para Voltar.';
+Route::fallback(function () {
+    echo 'Página não Existe. <a href="' . route("site.index") . '">Clique aqui</a> para Voltar.';
 });
 
 /*

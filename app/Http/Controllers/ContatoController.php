@@ -69,8 +69,10 @@ class ContatoController extends Controller
             'telefone.required' => 'O campo Telefone é Obrigatório',
             'email.email' => 'O campo Email precisa ser válido',
             'motivo_contatos_id.required' => 'O campo Motivo deve ser escolhido',
+           
             //'mensagem.required' => 'O campo Mensagem deve ser preenchido',
             'mensagem.max' => 'O campo Mensagem precisa ser menor que 220 caractéres',
+            
             //Mensagem default para algum outro campo, exemplo 'required'
             'required' => 'O campo :Attribute é obrigatório'
         ];
